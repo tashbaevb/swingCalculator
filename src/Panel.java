@@ -16,10 +16,15 @@ public class Panel extends JPanel {
     private JButton sinButton = new JButton("sin"), cosButton = new JButton("cos"), tanButton = new JButton("tan"), ctanButton = new JButton("ctg");
     private JButton expButton = new JButton("^"), clear = new JButton("C");
     private JButton sqrt = new JButton("√"), log10 = new JButton("lg10"), ln = new JButton("ln");
+    private JButton ms = new JButton("MS"), mr = new JButton("MR"), mc = new JButton("MC"), mplus = new JButton("M+"), mminus = new JButton("M-"), m = new JButton("");
+    private JButton p = new JButton("P"), toggleButton = new JButton("Too");
 
     private double num1 = 0;
     private char operator = ' ';
     private double ans = 0;
+    double memory = 0;
+    double number_p = 3.1415926535;
+    private boolean isDegreesMode = true;
 
     public Panel() {
         setLayout(null);
@@ -29,6 +34,34 @@ public class Panel extends JPanel {
         backspace.setBounds(10, 250, 50, 50);
         backspace.setFont(font);
         add(backspace);
+
+        toggleButton.setBounds(130, 370, 50, 50);
+        toggleButton.setFont(font);
+        add(toggleButton);
+
+        mr.setBounds(10, 310, 50, 50);
+        mr.setFont(font);
+        add(mr);
+
+        mc.setBounds(70, 310, 50, 50);
+        mc.setFont(font);
+        add(mc);
+
+        mplus.setBounds(130, 310, 50, 50);
+        mplus.setFont(font);
+        add(mplus);
+
+        mminus.setBounds(190, 310, 50, 50);
+        mminus.setFont(font);
+        add(mminus);
+
+        ms.setBounds(250, 310, 50, 50);
+        ms.setFont(font);
+        add(ms);
+
+        p.setBounds(310, 310, 50, 50);
+        p.setFont(font);
+        add(p);
 
         equ.setBounds(130, 250, 50, 50);
         equ.setFont(font);
@@ -200,7 +233,13 @@ public class Panel extends JPanel {
         sinButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 double num = Double.parseDouble(output.getText());
-                double result = Math.sin(Math.toRadians(num));
+                double result;
+
+                if (isDegreesMode) {
+                    result = Math.sin(Math.toRadians(num));
+                } else {
+                    result = Math.sin(num);
+                }
                 output.setText(formatResult(result));
             }
         });
@@ -226,6 +265,52 @@ public class Panel extends JPanel {
                 double num = Double.parseDouble(output.getText());
                 double result = 1 / Math.tan(Math.toRadians(num));
                 output.setText(formatResult(result));
+            }
+        });
+
+        toggleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                isDegreesMode = !isDegreesMode;
+                toggleButton.setText(isDegreesMode ? "DEG" : "RAD");
+            }
+        });
+
+
+        p.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                output.setText(String.valueOf(number_p));
+            }
+        });
+
+        ms.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                memory = Double.parseDouble(output.getText());
+            }
+        });
+
+        mr.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                output.setText(String.valueOf(memory));
+            }
+        });
+
+        mc.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                memory = 0;
+            }
+        });
+
+        mplus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                memory += Double.parseDouble(output.getText());
+                num1 += memory;
+            }
+        });
+
+        mminus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                memory -= Double.parseDouble(output.getText());
+                num1 += memory;
             }
         });
 
